@@ -1,18 +1,24 @@
 public class Product {
-    public string Title;
+    public string Name;
     public double Price;
-    public int StockQuantity;
+    public int StockQuantity { get; private set; }
 
-    public Product(string title, double price, int stockQuantity) {
-        Title = title;
+    public Product(string name, double price, int stockQuantity) {
+        Name = name;
         Price = price;
-        StockQuantity = stockQuantity;
+
+        if (stockQuantity < 0) {
+            StockQuantity = 0;
+        } else {
+            StockQuantity = stockQuantity;
+        }
     }
 
     public void Restock(int amount) {
         if (amount <= 0) {
             return;
         }
+
         StockQuantity += amount;
     }
 
@@ -20,20 +26,12 @@ public class Product {
         if (amount <= 0 || amount > StockQuantity) {
             return false;
         }
+
         StockQuantity -= amount;
         return true;
     }
 
     public double CalculateTotalCost(int quantity) {
-        if (quantity <= 0) {
-            return 0;
-        }
         return Price * quantity;
-    }
-
-    public string GetProductInfo() {
-        return $">>> Товар: {Title} <<<\n" +
-               $"Цена за шт.: {Price} руб.\n" +
-               $"Остаток на складе: {StockQuantity} шт.";
     }
 }
